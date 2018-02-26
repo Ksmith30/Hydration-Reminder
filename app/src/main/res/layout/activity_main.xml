@@ -85,4 +85,11 @@
             android:text="@string/default_charge_notification_count" />
 
     </RelativeLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="testNotification"
+        android:text="@string/test_notification_button_text"
+        />
 </LinearLayout>
