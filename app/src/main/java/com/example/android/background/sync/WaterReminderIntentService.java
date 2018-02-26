@@ -22,9 +22,9 @@ import android.support.annotation.Nullable;
 import com.example.android.background.sync.ReminderTasks;
 
 @SuppressLint("Registered")
-class WaterReminderIntentService extends IntentService {
+public class WaterReminderIntentService extends IntentService {
 
-    WaterReminderIntentService() {
+    public WaterReminderIntentService() {
         super(WaterReminderIntentService.class.getName());
     }
 
