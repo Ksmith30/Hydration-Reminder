@@ -28,4 +28,8 @@
 
     <string name="test_notification_button_text">Test Notification</string>
 
+    <string name="action_dismiss_notification">Dismiss</string>
+
+    <string name="action_drink_water">Drink!</string>
+
 </resources>

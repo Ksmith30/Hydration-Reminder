@@ -17,10 +17,15 @@ import java.lang.String;
 
 import com.example.android.background.MainActivity;
 import com.example.android.background.R;
+import com.example.android.background.sync.ReminderTasks;
+import com.example.android.background.sync.WaterReminderIntentService;
 
 public class NotificationUtils {
 
     private static final int NOTIFICATION_REQUEST = 1;
+    private static final int ACTION_IGNORE_PENDING_INTENT_ID = 239;
+    private static final int ACTION_DRINK_PENDING_INTENT_ID = 298;
+
     private static final String CHANNEL_ID = "channel";
 
     public static void clearAllNotifications(Context context) {
@@ -54,6 +59,8 @@ public class NotificationUtils {
                         .bigText("Hello"))
                 .setContentIntent(contentIntent(context))
                 .setAutoCancel(true)
+                .addAction(drinkWaterAction(context))
+                .addAction(ignoreReminderAction(context))
                 .setDefaults(Notification.DEFAULT_VIBRATE)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
@@ -75,6 +82,41 @@ public class NotificationUtils {
     public static Bitmap largeIcon(Context context) {
         Resources resources = context.getResources();
         return BitmapFactory.decodeResource(resources, R.drawable.ic_local_drink_black_24px);
+    }
+
+    public static NotificationCompat.Action ignoreReminderAction(Context context) {
+        Intent ignoreReminderIntent = new Intent(context, WaterReminderIntentService.class);
+        ignoreReminderIntent.setAction(ReminderTasks.ACTION_DISMISS_NOTIFICATION);
+        PendingIntent ignoreReminderPendingIntent = PendingIntent.getService(
+                context,
+                ACTION_IGNORE_PENDING_INTENT_ID,
+                ignoreReminderIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
+        NotificationCompat.Action ignoreReminderAction = new NotificationCompat.Action(R.drawable.ic_cancel_black_24px,
+                context.getString(R.string.action_dismiss_notification), ignoreReminderPendingIntent);
+
+        return ignoreReminderAction;
+    }
+
+
+    public static NotificationCompat.Action drinkWaterAction(Context context) {
+        Intent drinkWaterIntent = new Intent(context, WaterReminderIntentService.class);
+        drinkWaterIntent.setAction(ReminderTasks.ACTION_INCREMENT_WATER_COUNT);
+        PendingIntent drinkWaterPendingIntent = PendingIntent.getService(
+                context,
+                ACTION_DRINK_PENDING_INTENT_ID,
+                drinkWaterIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Action drinkWaterReminderAction = new NotificationCompat.Action(
+                R.drawable.ic_drink_notification,
+                context.getString(R.string.action_drink_water),
+                drinkWaterPendingIntent);
+
+        return drinkWaterReminderAction;
+
     }
 
 }
